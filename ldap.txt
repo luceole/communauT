@@ -2,7 +2,7 @@
 ldap_admin = "cn=admin,o=gouv,c=fr"
 
 # mot de passe de l'admin LDAP
-ldap_passwd = "AdminEole21"
+ldap_passwd = "Mdp"
 
 # branche utilisateurs
 users_branche = "ou=utilisateurs,ou=eole,ou=education,o=gouv,c=fr"

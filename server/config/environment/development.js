@@ -7,6 +7,11 @@ module.exports = {
   mongo: {
     uri: 'mongodb://localhost/annuaire-dev'
   },
+  seedDB: true,
 
-  seedDB: true
+  etherpad: {
+    apikey: '2ee76d94192fce9c225318573c40a3f5c35541efdfc3ea39af003df2abc45f88',
+    host: 'localhost',
+    port: '9001'
+  }
 };

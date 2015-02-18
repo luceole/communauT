@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: GroupCtrl', function () {
+describe('Controller: GroupCtrl', function() {
 
   // load the controller's module
   beforeEach(module('testApp'));
@@ -8,14 +8,14 @@ describe('Controller: GroupCtrl', function () {
   var GroupCtrl, scope;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function($controller, $rootScope) {
     scope = $rootScope.$new();
     GroupCtrl = $controller('GroupCtrl', {
       $scope: scope
     });
   }));
 
-  it('should ...', function () {
+  it('should ...', function() {
     expect(1).toEqual(1);
   });
 });

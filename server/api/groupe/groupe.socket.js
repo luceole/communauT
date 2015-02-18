@@ -7,10 +7,10 @@
 var Groupe = require('./groupe.model');
 
 exports.register = function(socket) {
-  Groupe.schema.post('save', function (doc) {
+  Groupe.schema.post('save', function(doc) {
     onSave(socket, doc);
   });
-  Groupe.schema.post('remove', function (doc) {
+  Groupe.schema.post('remove', function(doc) {
     onRemove(socket, doc);
   });
 }

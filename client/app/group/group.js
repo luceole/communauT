@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('testApp')
-  .config(function ($stateProvider) {
+  .config(function($stateProvider) {
     $stateProvider
       .state('group', {
         url: '/group',

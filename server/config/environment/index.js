@@ -43,6 +43,10 @@ var all = {
 
 };
 
+// TITRE 
+var banTitre="Annuaire de la Communautée"
+
+
 // Export the config object based on the NODE_ENV
 // ==============================================
 module.exports = _.merge(

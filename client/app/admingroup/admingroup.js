@@ -7,8 +7,7 @@ angular.module('testApp')
         url: '/admingroup',
         templateUrl: 'app/admingroup/admingroup.html',
         controller: 'AdmingroupCtrl',
- 	authenticate: true,
-        adminreserved: true
+        authenticate: true,
+        adminreserved: false
       });
   });
-

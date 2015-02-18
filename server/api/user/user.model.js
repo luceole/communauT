@@ -5,23 +5,37 @@ var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
 var UserSchema = new Schema({
-  uid: String,
+  uid: { type: String, unique: true},
   name: String,
   surname: String,
-  email: { type: String, lowercase: true },
+  email: {
+    type: String,
+    lowercase: true
+  },
   role: {
     type: String,
     default: 'user'
   },
   structure: String,
   isactif: Boolean,
-  isdemande: Boolean ,
+  isdemande: Boolean,
   hashedPassword: String,
   provider: String,
   firstdate: Date,
-  creationDate: {type: Date, 'default': Date.now},
+  creationDate: {
+    type: Date,
+    'default': Date.now
+  },
+  'authorPadID':String,
   salt: String,
-  memberOf: [{ type: Schema.Types.ObjectId, ref : 'Groupe'}]   
+  memberOf: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Groupe'
+  }],
+     adminOf: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Groupe'
+  }]
 });
 
 /**
@@ -49,15 +63,16 @@ UserSchema
   .virtual('profile')
   .get(function() {
     return {
-      '_id' : this._id,
+      '_id': this._id,
       'name': this.name,
-      'surname': this.surname,
-      'isactif': this.isactif,
+      'surname': this.surname,'isactif': this.isactif,
       'email': this.email,
       'structure': this.structure,
       'role': this.role,
-      'memberOf': this.memberOf
-    };
+      'authorPadID': this.authorPadID,
+      'memberOf': this.memberOf,
+      'adminOf': this.adminOf
+    }; 
   });
 
 // Non-sensitive info we'll be putting in the token
@@ -99,29 +114,33 @@ UserSchema
   .path('email')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({email: value}, function(err, user) {
-      if(err) throw err;
-      if(user) {
-        if(self.id === user.id) return respond(true);
+    this.constructor.findOne({
+      email: value
+    }, function(err, user) {
+      if (err) throw err;
+      if (user) {
+        if (self.id === user.id) return respond(true);
         return respond(false);
       }
       respond(true);
     });
-}, 'Cette adresse  utilisée avec un autre identifiant!');
+  }, 'Cette adresse  utilisée avec un autre identifiant!');
 // Validate uid is not taken
 UserSchema
   .path('uid')
   .validate(function(value, respond) {
     var self = this;
-    this.constructor.findOne({uid: value}, function(err, user) {
-      if(err) throw err;
-      if(user) {
-        if(self.id === user.id) return respond(true);
+    this.constructor.findOne({
+      uid: value
+    }, function(err, user) {
+      if (err) throw err;
+      if (user) {
+        if (self.id === user.id) return respond(true);
         return respond(false);
       }
       respond(true);
     });
-}, 'Cet identifiant est dèja utilisé!');
+  }, 'Cet identifiant est dèja utilisé!');
 
 var validatePresenceOf = function(value) {
   return value && value.length;

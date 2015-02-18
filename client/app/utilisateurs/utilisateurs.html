@@ -2,107 +2,131 @@
 
 <div class="container">
   <p>Gestion des utilisateurs (acces réservé admin)</p>
-<form >
+  <form>
     <input ng-model="search.$" placeholder="Recherche globale">
-    <input ng-model="search.email" placeholder="Recherche sur le Mel">
-     Utilisateurs Non Actif <input type="checkbox" ng-model="search.isactif" ng-true-value=false ng-false-value="">  
+    <input ng-model="search.email" placeholder="Recherche sur le Mel"> Utilisateurs Non Actif
+    <input type="checkbox" ng-model="search.isactif" ng-true-value=false ng-false-value="">
   </form>
-<dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="app/utilisateurs/dirPagination.tpl.html"></dir-pagination-controls>
-<br>
-<table class="table table-striped " >
-<tr dir-paginate="user in users | orderBy:'name' | filter:search:strict | itemsPerPage :'12' ">
-<td>
-<button class="btn btn-warning btn-xs" type="button" ng-if="!user.isactif"  ng-click="active(user)" > 
- <span class="glyphicon glyphicon-star"></span>Activer 
- </button>
-<button type="button" class="btn btn-success btn-xs" ng-if="user.isactif"  ng-click="deactive(user)" rel="tooltip" title="Suspendre cet utilisateur" >Déactiver</button>
+  <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="app/utilisateurs/dirPagination.tpl.html"></dir-pagination-controls>
+  <br>
+  <table class="table table-striped ">
+    <tr dir-paginate="user in users | orderBy:'name' | filter:search:strict | itemsPerPage :'12' ">
+      <td>
+        <button class="btn btn-warning btn-xs" type="button" ng-if="!user.isactif" ng-click="active(user)">
+          <span class="glyphicon glyphicon-star"></span>Activer
+        </button>
+        <button type="button" class="btn btn-success btn-xs" ng-if="user.isactif" ng-click="deactive(user)" rel="tooltip" title="Suspendre cet utilisateur">Déactiver</button>
 
-<span> <a href ng-click="edit(user)" rel="tooltip" title="Modifier" class="trash"><div class="glyphicon glyphicon-pencil pull-right"></div></a></span>
+        <span>
+          <a href ng-click="edit(user)" rel="tooltip" title="Modifier" class="trash">
+            <div class="glyphicon glyphicon-pencil pull-right"></div>
+          </a>
+        </span>
 
-</td> <td>
-        {{user.uid}} 
-</td> <td>
+      </td>
+      <td>
+        {{user.uid}}
+      </td>
+      <td>
         <strong>{{user.name}}</strong>
         <strong>{{user.surname}}</strong>
-</td> <td>
-        <strong>   {{user.structure}}  </strong>
-</td> <td>
-        <span class="text-muted "><a href=mailto:{{user.email}} rel="tooltip" title="Envoyer un courriel"> {{user.email}}  </a>  </span>
-<span ng-show="user.uid!='admin'"> <a href ng-click="delete(user)" rel="tooltip" title="Effacer" class="trash"><div class="glyphicon glyphicon-trash pull-right"></div></a></span>
-</td>
-</tr>
-</table>
+      </td>
+      <td>
+        <strong> {{user.structure}} </strong>
+      </td>
+      <td>
+        <span class="text-muted "><a href=mailto:{{user.email}} rel="tooltip" title="Envoyer un courriel"> {{user.email}}  </a> </span>
+        <span ng-show="user.uid!='admin'">
+          <a href ng-click="delete(user)" rel="tooltip" title="Effacer" class="trash">
+            <div class="glyphicon glyphicon-trash pull-right"></div>
+          </a>
+        </span>
+      </td>
+    </tr>
+  </table>
 
-<script type="text/ng-template" id="modalEdit.html">
-<div class="modal-header">
-            <h3 class="modal-title">Modification de {{user.uid}}</h3>
-        </div>
-        <div class="modal-body">
+  <script type="text/ng-template" id="modalEdit.html">
+    <div class="modal-header">
+      <h3 class="modal-title">Modification de {{user.uid}}</h3>
+    </div>
+    <div class="modal-body">
 
-<form class="form" name="editerForm" ng-submit="editer(editerForm)" novalidate>
+      <form class="form" name="editerForm" ng-submit="editer(editerForm)" novalidate>
 
-<div class="form-group" ng-class="{ 'has-success': editerForm.name.$valid && submitted,
+        <div class="form-group" ng-class="{ 'has-success': editerForm.name.$valid && submitted,
                                     'has-error': editerForm.name.$invalid && submitted }">
-Nom 
-<input type="text" name="name" class="form-control" ng-model="user.name"
-      required   style="width:350px"/>
-      <p class="help-block" ng-show="editerForm.name.$error.required && submitted">
-      Nom Obligatoire 
-      </p>
-      </div>
-<div class="form-group" ng-class="{ 'has-success': editerForm.surname.$valid && submitted,
+          Nom
+          <input type="text" name="name" class="form-control" ng-model="user.name" required style="width:350px" />
+          <p class="help-block" ng-show="editerForm.name.$error.required && submitted">
+            Nom Obligatoire
+          </p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-success': editerForm.surname.$valid && submitted,
                                     'has-error': editerForm.surname.$invalid && submitted }">
 
-Prénom 
-<input type="text" name="surname" class="form-control" ng-model="user.surname"
-       placeholder="Votre prénom"
-       required  style="width:350px"/>
-       <p class="help-block" ng-show="editerForm.surname.$error.required && submitted">
-       Prénom  Obligatoire 
-       </p>
-       </div>
-<div class="form-group" ng-class="{ 'has-success': editerForm.structure.$valid && submitted,
+          Prénom
+          <input type="text" name="surname" class="form-control" ng-model="user.surname" placeholder="Votre prénom" required style="width:350px" />
+          <p class="help-block" ng-show="editerForm.surname.$error.required && submitted">
+            Prénom Obligatoire
+          </p>
+        </div>
+        <div class="form-group" ng-class="{ 'has-success': editerForm.structure.$valid && submitted,
                                     'has-error': editerForm.structure.$invalid && submitted }">
-<span >Structure de rattachement :
-<select ng-model="user.structure" >
-         <option value="Education"> Education </option>
-         <option value="Ecologie"> Ecologie </option>
-         <option value="Affaires Etrangères"> Affaires Etrangères </option>
-         <option value="Affaires Sociales"> Affaires Sociales </option>
-         <option value="Intérieur"> Intérieur </option>
-         <option value="Finance"> Finances </option>
-         <option value="Collectivité"> Collectivité </option>
-         <option value="Autre"> Autre </option>
-</select>
-</span>
-        <p class="help-block" ng-show="editerForm.structure.$error.required && submitted">
-        Structure de rattachement  Obligatoire 
-        </p>
- </div>
+          <span>Structure de rattachement :
+            <select ng-model="user.structure">
+              <option value="Education"> Education </option>
+              <option value="Ecologie"> Ecologie </option>
+              <option value="Affaires Etrangères"> Affaires Etrangères </option>
+              <option value="Affaires Sociales"> Affaires Sociales </option>
+              <option value="Intérieur"> Intérieur </option>
+              <option value="Finance"> Finances </option>
+              <option value="Collectivité"> Collectivité </option>
+              <option value="Autre"> Autre </option>
+            </select>
+          </span>
+          <p class="help-block" ng-show="editerForm.structure.$error.required && submitted">
+            Structure de rattachement Obligatoire
+          </p>
+        </div>
 
-<div class="form-group" ng-class="{ 'has-success': editerForm.email.$valid && submitted,
+        <div class="form-group" ng-class="{ 'has-success': editerForm.email.$valid && submitted,
                                     'has-error': editerForm.email.$invalid && submitted }">
-Courriel
-<input type="email" name="email" class="form-control" ng-model="user.email"
-       placeholder="Votre courriel"
-       required
-       mongoose-error  style="width:350px"/>
-       <p class="help-block" ng-show="editerForm.email.$error.email && submitted">
-       Adresse electronique invalide.
-      </p>
-      <p class="help-block" ng-show="editerForm.email.$error.required && submitted">
-       Quel est votre adresse electronique?
-       </p>
-       <p class="help-block" ng-show="editerForm.email.$error.mongoose">
+          Courriel
+          <input type="email" name="email" class="form-control" ng-model="user.email" placeholder="Votre courriel" required mongoose-error style="width:350px" />
+          <p class="help-block" ng-show="editerForm.email.$error.email && submitted">
+            Adresse electronique invalide.
+          </p>
+          <p class="help-block" ng-show="editerForm.email.$error.required && submitted">
+            Quel est votre adresse electronique?
+          </p>
+          <p class="help-block" ng-show="editerForm.email.$error.mongoose">
             {{ errors.email }}
           </p>
-</div>
-</div>
-Groupes : {{user.memberOf}}
         </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary" ng-click="ok(editerForm)">OK</button>
-            <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-        </div>
-    </script>
+      
+        <label>
+          Utilisateur Activé:
+    <input type="checkbox" ng-model="user.isactif" >
+  </label>
+ 
+        
+        Role : 
+        <select ng-model="user.role">
+        <option value="user"> Utilisateur </option>
+        <option value="admin_grp"> Administrateur de groupe </option>
+        <option value="admin"> Administrateur Principal </option>
+        </select>
+  
+        
+    
+        
+        
+    </div>
+    Groupes : {{user.memberOf}}
+</div>
+<div class="modal-footer">
+  <button class="btn btn-primary" ng-click="ok(editerForm)">OK</button>
+  <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>
+</script>
 </div>

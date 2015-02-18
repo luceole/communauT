@@ -1,14 +1,12 @@
 'use strict';
 
 angular.module('testApp')
-  .factory('Auth', function Auth($location, $rootScope, $http,  $cookieStore, $q, User, Groupe) {
+  .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, User, Groupe, Pool) {
     var currentUser = {};
-    if($cookieStore.get('token')) {
+    if ($cookieStore.get('token')) {
       currentUser = User.get();
     }
-
     return {
-
       /**
        * Authenticate user and save token
        *
@@ -16,7 +14,7 @@ angular.module('testApp')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      login: function(user, callback) {
+      login: function (user, callback) {
         var cb = callback || angular.noop;
         var deferred = $q.defer();
 
@@ -24,13 +22,13 @@ angular.module('testApp')
           uid: user.uid,
           password: user.password
         }).
-        success(function(data) {
+        success(function (data) {
           $cookieStore.put('token', data.token);
           currentUser = User.get();
           deferred.resolve(data);
           return cb();
         }).
-        error(function(err) {
+        error(function (err) {
           this.logout();
           deferred.reject(err);
           return cb(err);
@@ -44,20 +42,37 @@ angular.module('testApp')
        *
        * @param  {Function}
        */
-      logout: function() {
+      logout: function () {
         $cookieStore.remove('token');
         currentUser = {};
       },
 
-      byMail: function(mel,callback) {
+      byMail: function (mel, callback) {
         var cb = callback || angular.noop;
         return User.bymail(mel,
-         function(err) {
+          function (err) {
             return cb(err);
-},
-          function(err) {
+          },
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
+      },
+
+      openPad: function (pad, callback) {
+        var cb = callback || angular.noop;
+        $http.post('/api/pads', {
+          groupID: pad.groupID,
+          authorID: pad.authorID,
+        }).
+        success(function (data) {
+          // console.log("session PAD: " + data.sessionID);
+          $cookieStore.put('sessionID', data.sessionID);
+          return cb(data);
+        }).
+        error(function (err) {
+          console.lo("err :" + err)
+          return cb(err);
+        }.bind(this)).$promise;
       },
       /**
        * Create a new user
@@ -66,31 +81,45 @@ angular.module('testApp')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      createUser: function(user, callback) {
+      createUser: function (user, callback) {
         var cb = callback || angular.noop;
 
         return User.save(user,
-          function(data) {
+          function (data) {
             $cookieStore.put('token', data.token);
             currentUser = User.get();
             return cb(user);
           },
-          function(err) {
+          function (err) {
             this.logout();
             return cb(err);
           }.bind(this)).$promise;
       },
 
-       groupsofOwner: function(uid, callback) {
+      groupsofOwner: function (uid, callback) {
         var cb = callback || angular.noop;
         return Groupe.query(
-          function(data) {
+          function (data) {
             return cb(data);
           },
-          function(err) {
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
+
+      getGroupe: function (id, callback) {
+        var cb = callback || angular.noop;
+        return Groupe.show({
+            id: id
+          },
+          function (data) {
+            return cb(data);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+
 
       /**
        *  Update a user
@@ -99,87 +128,215 @@ angular.module('testApp')
        * @param  {Function} callback - optional
        * @return {Promise}
        */
-      updateUser: function(id,user, callback) {
+      updateUser: function (id, user, callback) {
         var cb = callback || angular.noop;
-        return User.update({id: id},user,
-          function(data) {
+        return User.update({
+            id: id
+          }, user,
+          function (data) {
             return cb(data);
           },
-          function(err) {
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
 
-      updateMe: function(id,user, callback) {
+      updateMe: function (id, user, callback) {
         var cb = callback || angular.noop;
-        return User.updateme({id: id},user,
-          function(data) {
+        return User.updateme({
+            id: id
+          }, user,
+          function (data) {
             return cb(data);
           },
-          function(err) {
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
-       getusers : function(id, callback) {
+      getusers: function (id, callback) {
         var cb = callback || angular.noop;
         return User.query(
-          function(data) {
+          function (data) {
             return cb(data);
           },
-          function(err) {
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+
+      getadminsgrp: function (id, callback) {
+        var cb = callback || angular.noop;
+        return User.query({
+            role: 'admin_grp'
+          },
+          //    {role: { $in: [ 'admin', 'admin_grp' ] }},  // Non suporté par query()!!!
+          function (data) {
+            return cb(data);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+
+      addUserGroup: function (idGroupe, callback) {
+        var cb = callback || angular.noop;
+        return User.addusergroupe({
+            id: currentUser._id
+          }, {
+            idGroupe: idGroupe
+          },
+          function (user) {
+            currentUser = User.get();
+            return cb(user);
+          },
+          function (err) {
+            return cb(err);
+          }).$promise;
+      },
+
+      delUserGroup: function (idGroupe, callback) {
+        var cb = callback || angular.noop;
+        return User.delusergroupe({
+            id: currentUser._id
+          }, {
+            idGroupe: idGroupe
+          },
+          function (user) {
+            currentUser = User.get();
+            return cb(user);
+          },
+          function (err) {
+            return cb(err);
+          }).$promise;
+      },
+      eventparticipate: function (id, ev, callback) {
+        var cb = callback || angular.noop;
+        return Groupe.eventparticipate({
+            id: id
+          }, ev,
+          function (data) {
+            return cb(data);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      eventupdate: function (id, ev, callback) {
+        var cb = callback || angular.noop;
+        return Groupe.eventupdate({
+            id: id
+          }, ev,
+          function (data) {
+            return cb(data);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      eventdelete: function (id, ev, callback) {
+        var cb = callback || angular.noop;
+        return Groupe.eventdelete({
+            id: id
+          }, ev,
+          function (data) {
+            return cb(data);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      eventsofgroup: function (id, callback) {
+        var cb = callback || angular.noop;
+        return Groupe.eventsofgroup({
+            id: id
+          },
+          function (data) {
+            return cb(data);
+          },
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
 
 
-       addUserGroup: function (idGroupe,callback) {
+      /***** Admin Groupe ****/
+      updategroupe: function (id, groupe, callback) {
         var cb = callback || angular.noop;
-        return User.addusergroupe({ id: currentUser._id},{idGroupe: idGroupe},
-         function(user) {
-         currentUser = User.get();
-            return cb(user);
-          },
-          function(err) {
-            return cb(err);
-          }).$promise;
-      },
-
-        delUserGroup: function (idGroupe,callback) {
-        var cb = callback || angular.noop;
-        return User.delusergroupe({ id: currentUser._id},{idGroupe: idGroupe},
-         function(user) {
-         currentUser = User.get();
-            return cb(user);
-          },
-          function(err) {
-            return cb(err);
-          }).$promise;
-      },
-
-
-/***** Admin Groupe ****/
-        updategroupe: function(id,groupe, callback) {
-        var cb = callback || angular.noop;
-        return Groupe.update({id: id},groupe,
-          function(data) {
+        return Groupe.update({
+            id: id
+          }, groupe,
+          function (data) {
             return cb(data);
           },
-          function(err) {
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
-        createGroupe: function(groupe, callback) {
+      createGroupe: function (groupe, callback) {
         var cb = callback || angular.noop;
 
         return Groupe.save(groupe,
-          function(data) {
-            return cb(groupe);
+          function (data) {
+            return cb({
+              id: id
+            }, groupe);
           },
-          function(err) {
+          function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
 
+
+      // Create Pool
+      createPool: function (pool, callback) {
+        var cb = callback || angular.noop;
+
+        return Pool.save(pool,
+          function (data) {
+            return cb(pool);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+
+      updatePool: function (id, pool, callback) {
+        var cb = callback || angular.noop;
+
+        return Pool.update({
+            id: id
+          }, pool,
+          function (data) {
+            return cb(pool);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      votePool: function (id, pool, callback) {
+        var cb = callback || angular.noop;
+        console.log(pool)
+        return Pool.vote({
+            id: id
+          }, pool,
+          function (data) {
+            return cb(pool);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      mypools: function (mygrp, callback) {
+        var cb = callback || angular.noop;
+        console.log(mygrp);
+        return Mypools(mygrp,
+          function (data) {
+            return cb(mygrp);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
 
       /**
        * Change password
@@ -189,15 +346,17 @@ angular.module('testApp')
        * @param  {Function} callback    - optional
        * @return {Promise}
        */
-      changePassword: function(oldPassword, newPassword, callback) {
+      changePassword: function (oldPassword, newPassword, callback) {
         var cb = callback || angular.noop;
 
-        return User.changePassword({ id: currentUser._id }, {
+        return User.changePassword({
+          id: currentUser._id
+        }, {
           oldPassword: oldPassword,
           newPassword: newPassword
-        }, function(user) {
+        }, function (user) {
           return cb(user);
-        }, function(err) {
+        }, function (err) {
           return cb(err);
         }).$promise;
       },
@@ -207,7 +366,7 @@ angular.module('testApp')
        *
        * @return {Object} user
        */
-      getCurrentUser: function() {
+      getCurrentUser: function () {
         return currentUser;
       },
 
@@ -216,21 +375,21 @@ angular.module('testApp')
        *
        * @return {Boolean}
        */
-      isLoggedIn: function() {
+      isLoggedIn: function () {
         return currentUser.hasOwnProperty('role');
       },
 
       /**
        * Waits for currentUser to resolve before checking if user is logged in
        */
-      isLoggedInAsync: function(cb) {
-        if(currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function() {
+      isLoggedInAsync: function (cb) {
+        if (currentUser.hasOwnProperty('$promise')) {
+          currentUser.$promise.then(function () {
             cb(true);
-          }).catch(function() {
+          }).catch(function () {
             cb(false);
           });
-        } else if(currentUser.hasOwnProperty('role')) {
+        } else if (currentUser.hasOwnProperty('role')) {
           cb(true);
         } else {
           cb(false);
@@ -242,20 +401,20 @@ angular.module('testApp')
        *
        * @return {Boolean}
        */
-      isAdmin: function() {
+      isAdmin: function () {
         return currentUser.role === 'admin';
       },
-      isAdmin_grp: function() {
-        return currentUser.role === 'admin_grp';
+      isAdmin_grp: function () {
+        return (currentUser.role === 'admin_grp' || currentUser.role === 'admin');
       },
 
-      isActif: function() {
+      isActif: function () {
         return currentUser.isactif;
       },
       /**
        * Get auth token
        */
-      getToken: function() {
+      getToken: function () {
         return $cookieStore.get('token');
       }
     };
