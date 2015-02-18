@@ -1,0 +1,33 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="container">
+<p class="text-info">Selectionez les inscriptions à valider</p>
+<form >
+<button ng_if="demandes.length>0" ng-click="checkAll()">Toutes</button>
+<button  ng_if="demandes.length>0" ng-click="uncheckAll()">Aucune</button>
+<button  ng_if="demandes.length>0" clas='btn btn-default' ng-click="traite(demandes);" ><span>  Appliquer  </span> </button>
+</form >
+<br>
+<p class="text-warning" ng-if="demandes.length==0">Aucune inscriptions à valider</p>
+  <table class="table table-condensed table-striped" >
+  <tbody>
+  <tr  ng-repeat="user in demandes | orderBy:'name'">
+  <td>
+<input type="checkbox" ng-model="demandes[$index].isactif">
+  </td> <td>
+  {{user.creationDate  | date: "dd/MM/yyyy"}} 
+  </td> <td>
+  <strong>{{user.name}} </strong>&nbsp&nbsp{{user.surname}}
+  </td> <td>
+  {{user.email}} 
+  <td>
+  {{user.structure}} 
+  </td>
+  </tr>
+  </tbody>
+  </table >
+<br>
+<button ng_if="demandes.length>20" ng-click="checkAll()">Toutes</button>
+<button  ng_if="demandes.length>20" ng-click="uncheckAll()">Aucune</button>
+<button  ng_if="demandes.length>20" clas='btn btn-default' ng-click="traite(demandes);" ><span>  Appliquer  </span> </button>
+
+</div>

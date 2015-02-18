@@ -1,0 +1,86 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+<div class="row">
+<div class="col-sm-2"></div>
+<div class="col-sm-10">
+<tabset>
+<tab heading="Profil">
+<h3> Modification de votre compte : {{user.uid}} </h3>
+<form class="form" name="modifForm" ng-submit="editer(modifForm)" novalidate>
+
+<div class="form-group" ng-class="{ 'has-success': modifForm.name.$valid && submitted,
+                                    'has-error': modifForm.name.$invalid && submitted }">
+Nom 
+<input type="text" name="name" class="form-control" ng-model="user.name"
+      required   style="width:350px"/>
+      <p class="help-block" ng-show="modifForm.name.$error.required && submitted">
+      Nom Obligatoire 
+      </p>
+      </div>
+<div class="form-group" ng-class="{ 'has-success': modifForm.surname.$valid && submitted,
+                                    'has-error': modifForm.surname.$invalid && submitted }">
+
+Prénom 
+<input type="text" name="surname" class="form-control" ng-model="user.surname"
+       placeholder="Votre prénom"
+       required  style="width:350px"/>
+       <p class="help-block" ng-show="modifForm.surname.$error.required && submitted">
+       Prénom  Obligatoire 
+       </p>
+       </div>
+<div class="form-group" ng-class="{ 'has-success': modifForm.structure.$valid && submitted,
+                                    'has-error': modifForm.structure.$invalid && submitted }">
+<span >Structure de rattachement :
+<select ng-model="user.structure" >
+         <option value="Education"> Education </option>
+         <option value="Ecologie"> Ecologie </option>
+         <option value="mae"> Affaires Etrangères </option>
+         <option value="Affaires Sociales"> Affaires Sociales </option>
+         <option value="Intérieur"> Intérieur </option>
+         <option value="Finance"> Finances </option>
+         <option value="Collectivité"> Collectivité </option>
+         <option value="Autre"> Autre </option>
+</select>
+</span>
+        <p class="help-block" ng-show="modifForm.structure.$error.required && submitted">
+        Structure de rattachement  Obligatoire 
+        </p>
+ </div>
+
+<div class="form-group" ng-class="{ 'has-success': modifForm.email.$valid && submitted,
+                                    'has-error': modifForm.email.$invalid && submitted }">
+Courriel
+<input type="email" name="email" class="form-control" ng-model="user.email"
+       placeholder="Votre courriel"
+       required
+       mongoose-error  style="width:350px"/>
+       <p class="help-block" ng-show="modifForm.email.$error.email && submitted">
+       Adresse electronique invalide.
+      </p>
+      <p class="help-block" ng-show="modifForm.email.$error.required && submitted">
+       Quel est votre adresse electronique?
+       </p>
+       <p class="help-block" ng-show="modifForm.email.$error.mongoose">
+            {{ errors.email }}
+          </p>
+</div>
+
+
+
+        <div>&nbsp<p>
+          <button class="btn  btn-default btn-lg btn-primary"   type="submit">
+            Modifier 
+          </button>
+      <p class="help-block"> {{editMessage }} </p>
+      </div>
+      </form>
+
+</tab>
+<tab heading="Mot de passe">
+<div ng-include="'app/account/edit/mdp.html'"></div>
+</tab>
+</tabset>
+    </div>
+  </div>
+</div>

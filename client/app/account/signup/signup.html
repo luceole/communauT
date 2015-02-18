@@ -1,0 +1,117 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/banniere/banniere.html'"></div>
+
+<div class="container">
+<div class="row">
+<div class="col-sm-2"></div>
+<div class="col-sm-10">
+<h3> Inscription </h3>
+<form class="form" name="registerForm" ng-submit="register(registerForm)" novalidate>
+
+<div class="form-group" ng-class="{ 'has-success': registerForm.name.$valid && submitted,
+                                    'has-error': registerForm.name.$invalid && submitted }">
+
+<input type="text" name="name" class="form-control" ng-model="user.name"
+      placeholder="Votre nom"
+      required   style="width:350px"/>
+      <p class="help-block" ng-show="registerForm.name.$error.required && submitted">
+      Nom Obligatoire 
+      </p>
+      </div>
+<div class="form-group" ng-class="{ 'has-success': registerForm.surname.$valid && submitted,
+                                    'has-error': registerForm.surname.$invalid && submitted }">
+
+<input type="text" name="surname" class="form-control" ng-model="user.surname"
+       placeholder="Votre prénom"
+       required  style="width:350px"/>
+       <p class="help-block" ng-show="registerForm.surname.$error.required && submitted">
+       Prénom  Obligatoire 
+       </p>
+       </div>
+<div class="form-group" ng-class="{ 'has-success': registerForm.structure.$valid && submitted,
+                                    'has-error': registerForm.structure.$invalid && submitted }">
+<span >Structure de rattachement :
+<select ng-model="user.structure" ng-init="user.structure='Education'">
+         <option value="Education"> Education </option>
+         <option value="Ecologie"> Ecologie </option>
+         <option value="mae"> Affaires Etrangères </option>
+         <option value="Affaires Sociales"> Affaires Sociales </option>
+         <option value="Intérieur"> Intérieur </option>
+         <option value="Finance"> Finances </option>
+         <option value="Collectivité"> Collectivité </option>
+         <option value="Autre"> Autre </option>
+</select>
+</span>
+        <p class="help-block" ng-show="registerForm.structure.$error.required && submitted">
+        Structure de rattachement  Obligatoire 
+        </p>
+ </div>
+
+<div class="form-group" ng-class="{ 'has-success': registerForm.email.$valid && submitted,
+                                    'has-error': registerForm.email.$invalid && submitted }">
+<input type="email" name="email" class="form-control" ng-model="user.email"
+       placeholder="Votre courriel"
+       required
+       mongoose-error  style="width:350px"/>
+       <p class="help-block" ng-show="registerForm.email.$error.email && submitted">
+       Adresse electronique invalide.
+      </p>
+      <p class="help-block" ng-show="registerForm.email.$error.required && submitted">
+       Quel est votre adresse electronique?
+       </p>
+       <p class="help-block" ng-show="registerForm.email.$error.mongoose">
+            {{ errors.email }}
+          </p>
+</div>
+
+<div class="form-group" ng-class="{ 'has-success': registerForm.uid.$valid && submitted,
+                                    'has-error': registerForm.uid.$invalid && submitted }">
+
+<input type="uid" name="uid" class="form-control" ng-model="user.uid" 
+       ng-focus="myInit()";
+       placeholder="Votre identifiant de connexion"
+       required
+       mongoose-error  style="width:350px"/>
+       <p class="help-block" ng-show="registerForm.uid.$error.uid && submitted">
+       Identifiant non valide.
+       </p>
+       <p class="help-block" ng-show="registerForm.email.$error.required && submitted">
+       Choisissez votre login (courriel ou autre). 
+       </p>
+       <p class="help-block" ng-show="registerForm.uid.$error.mongoose">
+       {{ errors.uid }}
+       </p>
+</div>
+
+<div class="form-group" ng-class="{ 'has-success': registerForm.password.$valid && submitted, 'has-error': registerForm.password.$invalid && submitted }">
+<input type="password" id="Password" name="Password" class="form-control" ng-model="user.password"
+       placeholder="Mot de Passe"
+       ng-minlength="8"
+       required
+       mongoose-error
+       style="width:350px"/> 
+       <p class="text-danger"
+        ng-show="(registerForm.Password.$error.minlength || registerForm.Password.$error.required) && submitted">
+        8 Charactères Minimum
+       </p>
+       <p class="help-block" ng-show="registerForm.Password.$error.mongoose">
+          {{ errors.password }}
+        </p><br>
+<input type="password" name="ConfirmPassword" class="form-control"  ng-model="ConfirmPassword" style="width:350px"
+       required
+       equals-to="user.password"
+       placeholder="Retapez votre mot de passe "/>
+       <p class="text-danger" 
+ng-show="!registerForm.ConfirmPassword.$error.required && registerForm.ConfirmPassword.$error.equalsTo">
+        Les mots de passe ne sont pas identiques 
+       </p>
+</div>
+        <div>&nbsp<p>
+          <button class="btn  btn-default btn-lg btn-login"   type="submit">
+            Inscription 
+          </button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

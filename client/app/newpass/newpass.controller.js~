@@ -1,0 +1,21 @@
+'use strict';
+
+angular.module('testApp')
+ .controller('NewpassCtrl', function ($scope,User,Auth) {
+    $scope.message = '';
+    $scope.error = '';
+    $scope.register = function(form) {
+      Auth.byMail({ email: $scope.user.email }  
+        .then( function() {
+          $scope.errors.other = '';
+          $scope.message = 'Nouveau Mot de Passe Enregistré';
+        })
+        .catch( function() {
+          $scope.errors.other = 'Erreur de Mot de Passe ';
+          $scope.message = '';
+        })
+       )
+  };
+  });
+
+

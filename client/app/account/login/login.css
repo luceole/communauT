@@ -1,0 +1,37 @@
+.form-section {
+    font-size:14px;
+    margin:10px 0;
+}
+.form-section p {
+    margin:5px 0;
+}
+.form-control input:not([type='submit']) {
+    height:30px;
+    outline:0;
+    padding:2px 4px;
+    width:240px;
+}
+.form-section .custom-error {
+    color:#FF0000;
+}
+#css span.ok, #css span.ko {
+    display:none;
+    font-size:16px;
+}
+#css .ng-pristine {
+    border:1px solid Gold;
+}
+#css .ng-dirty.ng-valid {
+    border:1px solid Green;
+}
+#css .ng-dirty.ng-invalid {
+    border:1px solid Red;
+}
+#css .ng-dirty.ng-valid ~ span.ok {
+    color:green;
+    display:inline;
+}
+#css .ng-dirty.ng-invalid ~ span.ko {
+    color:red;
+    display:inline;
+}

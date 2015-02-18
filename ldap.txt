@@ -1,0 +1,12 @@
+# administrateur LDAP
+ldap_admin = "cn=admin,o=gouv,c=fr"
+
+# mot de passe de l'admin LDAP
+ldap_passwd = "AdminEole21"
+
+# branche utilisateurs
+users_branche = "ou=utilisateurs,ou=eole,ou=education,o=gouv,c=fr"
+
+# adresse du serveur de l'annuaire (en principe 127.0.0.1)
+serveur = "127.0.0.1"
+

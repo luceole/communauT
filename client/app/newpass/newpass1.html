@@ -1,0 +1,23 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/banniere/banniere.html'"></div>
+
+<div class="container">
+ <form name="myForm" novalidate ng-submit="register(myForm)">
+ <h3>Réinitialisation du mot de passe</h3>
+
+<div d="css" class="form-section">
+  <p>Adresse Electronique:</p>
+  <input type="email"  name="email"  ng-model="user.email" required/>
+  <span class="ok">☑</span> <span class="ko">☒</span>
+  <input type="submit" ng-disabled="myForm.email.$pristine || myForm.email.$dirty && myForm.email.$invalid" />
+  </div>
+  <div class="custom-error" ng-show="myForm.email.$dirty && myForm.email.$invalid">Attention: 
+<span ng-show="myForm.email.$error.required">Entrez l'adresse utilisée pour votre inscription</span>
+<span ng-show="myForm.email.$error.email">Entrez une adresse electronique valide</span>
+  </div>
+   <div class="help-block error"> {{ message }} </div>
+  </div>
+ </form>
+</div>
+
+

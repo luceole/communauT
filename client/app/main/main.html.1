@@ -1,0 +1,29 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>Annuaire des Utilisateurs</h1>
+    <p class="lead">Ensemble Ouvert Libre Evolutif</p>
+    <img src="assets/images/Moyen-logo-eole.png" algt="EOLE">
+  </div>
+</header>
+
+<div class="container" ng-if="!isLoggedIn()">
+<div class="row">
+<div class="col-lg-12">
+<h1 class="page-header">Informations:</h1>
+Pour profiter des services en ligne vous devez avoir un  compte.<br><p>
+<br>
+Pour créer votre compte  <a href="/signup">Inscrivez vous.</a><p>
+Pour le modifier  <a href="/login">Connectez vous.</a><p>
+</div>
+</div>
+</div>
+
+
+<footer class="footer">
+ <div class="container">
+    <a href="http://eole.education.orion.fr">EOLE</a> 
+    <a href="http://dev-eole.ac-dijon.fr">* Forges</a></p>
+ </div>
+</footer>

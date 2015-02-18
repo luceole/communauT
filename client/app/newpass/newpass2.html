@@ -1,0 +1,30 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/banniere/banniere.html'"></div>
+
+<div class="container">
+<div class="row">
+<div class="col-sm-12">
+<form class="form" name="form" ng-submit="register(form)" novalidate>
+
+ <div class="form-group" ng-class="{ 'has-success': form.email.$valid ,
+                                            'has-error': form.email.$invalid  }">
+    <div id="css" class="form-section">
+                <p>Courriel:</p>
+                <div style="width:264px;">
+<input type="email" id="email" name="email" class="form-control" ng-model="user.email" /> <span class="ok">☑</span> <span class="ko">☒</span>
+
+ <div class="help-block error" ng-show="form.email.$dirty && form.email.$error.required">Donnez l'adresse electronique utilisée lors de votre inscrition</div>
+    <div class="help-block error" ng-show="form.email.$error.email">Merci de saisir une adresse valide </div>
+         <button class="btn btn-inverse  " type="submit" ng-disabled="form.email.$pristine || form.email.$dirty && form.email.$invalid">
+            Reinitialisation 
+          </button>
+        </div>
+          <div class="help-block error"> {{ message }} </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
+
+
