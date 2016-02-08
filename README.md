@@ -1,9 +1,9 @@
 #CommunauT
 
 Organize your groups.
- Calendar schedule
- Pools
- Notes &  Pads
+ - Calendar schedule
+ - Polls
+ - Notes &  Pads
 
 
 
