@@ -9,6 +9,7 @@ var router = express.Router();
 
 router.get('/', auth.hasRole('admin'), controller.index);
 router.get('/demandes', auth.hasRole('admin'), controller.demandes);
+router.get('/listadmgrp', auth.hasRole('admin'), controller.listadmgrp);
 router.get('/bymail', controller.bymail);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);
 router.get('/me', auth.isAuthenticated(), controller.me);

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('testApp')
-  .factory('User', function($resource) {
+  .factory('User', function ($resource) {
     return $resource('/api/users/:id/:controller', {
       id: '@_id'
     }, {
@@ -51,6 +51,13 @@ angular.module('testApp')
         method: 'GET',
         params: {
           controller: 'bymail'
+        }
+      },
+      listadmgrp: {
+        method: 'GET',
+        isArray: true,
+        params: {
+          controller: 'listadmgrp'
         }
       }
 

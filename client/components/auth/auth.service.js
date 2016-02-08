@@ -17,7 +17,6 @@ angular.module('testApp')
       login: function (user, callback) {
         var cb = callback || angular.noop;
         var deferred = $q.defer();
-
         $http.post('/auth/local', {
           uid: user.uid,
           password: user.password
@@ -33,7 +32,6 @@ angular.module('testApp')
           deferred.reject(err);
           return cb(err);
         }.bind(this));
-
         return deferred.promise;
       },
 
@@ -50,6 +48,16 @@ angular.module('testApp')
       byMail: function (mel, callback) {
         var cb = callback || angular.noop;
         return User.bymail(mel,
+          function (err) {
+            return cb(err);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
+      },
+      listadmgrp: function (callback) {
+        var cb = callback || angular.noop;
+        return User.listadmgrp(
           function (err) {
             return cb(err);
           },
@@ -120,7 +128,6 @@ angular.module('testApp')
           }.bind(this)).$promise;
       },
 
-
       /**
        *  Update a user
        *
@@ -164,12 +171,11 @@ angular.module('testApp')
           }.bind(this)).$promise;
       },
 
-      getadminsgrp: function (id, callback) {
+      listadmin: function (id, callback) {
         var cb = callback || angular.noop;
         return User.query({
-            role: 'admin_grp'
+            role: 'admin'
           },
-          //    {role: { $in: [ 'admin', 'admin_grp' ] }},  // Non suporté par query()!!!
           function (data) {
             return cb(data);
           },
@@ -277,9 +283,7 @@ angular.module('testApp')
 
         return Groupe.save(groupe,
           function (data) {
-            return cb({
-              id: id
-            }, groupe);
+            return cb(groupe);
           },
           function (err) {
             return cb(err);

@@ -9,10 +9,11 @@ angular.module('testApp', [
     'ui.select',
     'ui.calendar',
     //  'ngTable',
-    //  'angularMoment',
+
     'angularUtils.directives.dirPagination',
     'ui.bootstrap',
-  'ckeditor'
+  'ckeditor',
+  'ngCalendar'
   ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

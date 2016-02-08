@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('testApp')
-  .controller('MainCtrl', function ($scope, $http, $location, $compile, $timeout, $cookies, $window, $modal, socket, uiCalendarConfig, Auth) {
+  .controller('MainCtrl', function ($scope, $http, $location, $compile, $timeout, $cookies, $window, $modal, socket, uiCalendarConfig, Auth, Calendar) {
     $scope.openPad = function (grp) {
       $http.post('/api/pads', {
         authorID: $scope.getCurrentUser().authorPadID,
@@ -95,11 +95,24 @@ angular.module('testApp')
       }
       console.log(event.source.group)
       $window.localStorage.setItem('eventPadId', event.eventPadID);
+
+      var icalEvent = {
+        start: new Date(event.start.format()),
+        end: new Date(event.end.format())
+      };
+      icalEvent.title = event.groupe;
+      icalEvent.description = event.info + " " + event.lieu;
+      icalEvent.addresss = event.lieu;
+
+
+
+
       element.qtip({
           content: {
             button: true,
             title: event.title,
-            text: "Groupe: " + event.groupe + "<br> Lieu: " + event.lieu + "<br>" + StartStop + "<br> <a href='/note'>PAD</a>"
+            text: "Groupe: " + event.groupe + "<br>info: " + event.info + "<br> Lieu: " + event.lieu + "<br>" + StartStop + "<br> <a href='/note'>PAD</a> <a href='" + Calendar.ical(icalEvent) + "'> ICAL </a> <a href='" + Calendar.google(icalEvent) + "'> GOOGLE </a> "
+              /* text: "Groupe: " + event.groupe + "<br> Lieu: " + event.lieu + "<br>" + StartStop + "<br> <a href='/note'>PAD</a>"*/
           },
           hide: {
             delay: 3000

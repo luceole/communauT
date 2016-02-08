@@ -188,11 +188,13 @@ exports.eventupdate = function (req, res) {
     if (ev) { // Drag and Drop
       console.log("Drag/Drop");
       ev.start = req.body.start;
+      ev.allDay = req.body.allDay;
       if (req.body.end) {
         ev.end = req.body.end;
-      } else {
-        ev.end = req.body.start
       }
+      /* else {
+         ev.end = req.body.start
+       }*/
       groupe.save(function (err, groupe) {
         if (err) {
           console.log(err);

@@ -1,23 +1,22 @@
 'use strict';
+'use strict';
 angular.module('testApp')
-  .controller('EvenementCtrl', function ($scope, $http, $modal, $filter, $compile, Auth, Groupe, Events) {
+  .controller('EvenementCtrl', function ($scope, $http, $modal, $filter, $compile, Auth, Groupe, Events, Calendar) {
     $scope.eventSources = [];
     $scope.selectedGroupeInfo = "";
     //        $scope.userGroupes = Auth.getCurrentUser().memberOf;
-
     if (Auth.isAdmin()) {
       $scope.isadminGroupes = Auth.getCurrentUser().adminOf;
       console.log("i am admin");
     } else {
       $scope.isadminGroupes = Auth.getCurrentUser().adminOf;
     }
-
     $scope.userGroupes = $scope.isadminGroupes;
 
     $scope.refreshEvents = function () {
       var eventsGroupe = {};
       var couleur = ['chocolate', 'FireBrick', 'Tan', 'Peru', 'oliveDrab', 'Lavender', 'GoldenRod', 'CornFlowerBlue', 'LightSkyBlue', 'grey', 'DotgerBlue', 'ForestGreen', 'DarkRed', ];
-      //console.log("refreshEvent");
+      console.log("refreshEvent");
       angular.forEach($scope.isadminGroupes, function (grp, index) {
         //console.log(grp);
         //var myUid = Auth.getCurrentUser()._id;
@@ -59,9 +58,6 @@ angular.module('testApp')
           userGroupes: function () {
             return $scope.userGroupes
           },
-          calendar: function () {
-            return $scope.uiConfig.calendar // ??
-          },
           refreshEvents: function () {
             return $scope.refreshEvents
           },
@@ -70,7 +66,6 @@ angular.module('testApp')
           }
         }
       });
-
     };
 
     // ** Ajout **//
@@ -88,9 +83,6 @@ angular.module('testApp')
           userGroupes: function () {
             return $scope.userGroupes
           },
-          calendar: function () {
-            return $scope.uiConfig.calendar // ??
-          },
           refreshEvents: function () {
             return $scope.refreshEvents
           },
@@ -102,24 +94,19 @@ angular.module('testApp')
     };
 
 
-    /* alert on Drop */
+    // Drag&Drop
     $scope.alertOnDrop = function (event, delta, revertFunc, jsEvent, ui, view) {
       $scope.alertMessage = ('  * Evenement modifé Debute à ' + event.start.format());
-
       if (!event.allDay) {
-        if (event.end != null) {
-          event.end = event.end.format();
-        } else {
-          event.end = event.start.format();
-        }
-        event.start = event.start.format();
+        event.end = event.end; // Never NULL => ForceEventDuration exept for AllDay Event
       }
+
       Auth.eventupdate(event.source.group._id, {
         _id: event._id,
-        start: event.start,
-        end: event.end
+        allDay: event.allDay,
+        start: new Date(event.start),
+        end: new Date(event.end)
       }).then(function (data) {
-        console.log(data);
         $scope.refreshEvents();
       })
     };
@@ -129,21 +116,34 @@ angular.module('testApp')
       $scope.alertMessage = (' *  Evenement modifé termine à ' + event.end.format());
       Auth.eventupdate(event.source.group._id, {
         _id: event._id,
-        start: event.start.format(),
-        end: event.end.format()
+        start: event.start,
+        end: event.end
       });
     };
+
     /* Render Tooltip */
     $scope.eventRender = function (event, element, view) {
+      /*  console.log(event.start.format())
+        console.log(event.end.format())*/
+      var icalEvent = {
+        // start: new Date(event.start + (60 * 60 * 1000)), // Marche pas jour complet !!!
+        start: new Date(event.start.format()),
+        end: new Date(event.end.format())
+      };
+      icalEvent.title = event.groupe;
+      icalEvent.description = event.info + " " + event.lieu;
+      icalEvent.addresss = event.lieu;
       var StartStop = event.start.format('DD/MM/YYYY')
       if (!event.allDay && event.end) {
-        StartStop = event.start.format('DD/MM/YYYY HH:mm') + "  - " + event.end.format('hh:mm')
+        StartStop = event.start.format('DD/MM/YYYY HH:mm') + "  - " + event.end.format('hh:mm');
       }
+      console.log(icalEvent)
       element.qtip({
         content: {
           button: true,
           title: event.title,
-          text: "Groupe: " + event.groupe + "<br>info: " + event.info + "<br> Lieu: " + event.lieu + "<br>" + StartStop + "<br> <a href='/note'>PAD</a>"
+          text: "Groupe: " + event.groupe + "<br>info: " + event.info + "<br> Lieu: " + event.lieu + "<br>" + StartStop + "<br> <a href='/note'>PAD</a> <a href='" + Calendar.ical(icalEvent) + "'> ICAL </a> <a href='" + Calendar.google(icalEvent) + "'> GOOGLE </a> "
+            /* text: "Groupe: " + event.groupe + "<br>info: " + event.info + "<br> Lieu: " + event.lieu + "<br>" + StartStop + "<br> <a href='/note'>PAD</a>"*/
         },
         hide: {
           delay: 2500
@@ -155,8 +155,6 @@ angular.module('testApp')
 
     }
 
-
-
     $scope.alertOnEventClick = $scope.editEvent;
     $scope.alertOnDayClick = $scope.addEvent;
     $scope.uiConfig = {
@@ -165,6 +163,7 @@ angular.module('testApp')
         height: 550,
         editable: true,
         timezone: 'local',
+        forceEventDuration: true,
         header: {
           center: 'title',
           left: 'month agendaWeek agendaDay ',
@@ -203,16 +202,14 @@ angular.module('testApp')
     $scope.backupEvent = new Events();
     $scope.calEvent = new Events();
     $scope.grp = {};
-    //console.debug(updateEvent);
     $modalInstance.result.then(function () {
       refreshEvents();
     }, function () {
-      console.log('Modal dismissed');
+      console.debug('Modal dismissed');
     });
 
 
-    if (updateEvent) {
-      //console.debug(updateEvent);
+    if (updateEvent) { //Update Event
       $scope.newEv = false;
       $scope.titre = "Modification de l'événement";
       $scope.backupEvent = updateEvent._id;
@@ -220,25 +217,20 @@ angular.module('testApp')
       $scope.calEvent.info = updateEvent.info;
       $scope.calEvent.participants = updateEvent.participants;
       $scope.calEvent.allDay = updateEvent.allDay;
-      $scope.calEvent.start = updateEvent.start.format();
+      $scope.calEvent.start = new Date(updateEvent.start);
       $scope.calEvent.lieu = updateEvent.lieu;
       if (updateEvent.end) {
-        $scope.calEvent.end = updateEvent.end.format();
-      } else {
-        $scope.calEvent.end = updateEvent.start.format()
+        $scope.calEvent.end = new Date(updateEvent.end);
       }
       $scope.userGroupes = userGroupes;
-      //$scope.selectedGroupeInfo = updateEvent.source.group.info;
       $scope.selectedGroupeInfo = updateEvent.source.group.info;
-    } else // Nouvel Evenement
+    } else // New Event
     {
-
       $scope.newEv = true;
       $scope.titre = "Ajout d'un événement";
-      $scope.calEvent.start = Sdate.format();
-      $scope.calEvent.end = Sdate.format();
-      /*            $scope.Groupes = userGroupes;
-                $scope.grp.selected = userGroupes[0];*/
+      $scope.calEvent.start = new Date(Sdate);
+      $scope.Groupes = userGroupes;
+      $scope.grp.selected = userGroupes[0];
       $scope.calEvent.info = "REUNION";
       $scope.isadminGroupes = userGroupes;
       $scope.grp.selected = userGroupes[0];
@@ -246,7 +238,6 @@ angular.module('testApp')
       $scope.calEvent.allDay = true;
     }
     $scope.cancel = function () {
-
       $modalInstance.dismiss('cancel');
     };
     $scope.openDD = function ($event) {
@@ -272,7 +263,6 @@ angular.module('testApp')
           console.log(err);
           $modalInstance.close();
         });
-
     };
 
     $scope.ok = function (form) {
@@ -284,7 +274,6 @@ angular.module('testApp')
         if ($scope.newEv) {
           console.log("Ajout  ");
           console.debug($scope.grp.selected);
-          //console.log($scope.calEvent.start);
           $scope.calEvent.title = $scope.grp.selected.info;
           $scope.calEvent.groupe = $scope.grp.selected.info;
           console.log($scope.calEvent);

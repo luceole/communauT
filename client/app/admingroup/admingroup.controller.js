@@ -62,6 +62,7 @@ angular.module('testApp')
     $scope.groupe = new Groupe(Sgroupe);
     $scope.person = {};
     $scope.admin = {};
+    $scope.forms = {};
     $scope.typeoptions = [
       {
         id: 0,
@@ -79,14 +80,27 @@ angular.module('testApp')
 
     $scope.person.selected = $scope.groupe.owner;
     //  $scope.admin.selected = $scope.groupe.adminby[0];
-    Auth.getadminsgrp()
+
+    Auth.listadmin()
       .then(function (u) {
-        $scope.users = u;
+        $scope.listadmin = u;
+        //         $scope.person.selected = u.filter(function (obj) {
+        //           return obj._id == Sgroupe.owner._id;
+        //         })[0];
       });
-    $scope.animgrp = $scope.users;
+
+    Auth.listadmgrp()
+      .then(function (liste) {
+        $scope.listadmgrp = liste;
+      });
+
+
+
+
     $scope.ok = function (form) {
       $scope.submitted = true;
-      if (form.$valid) {
+      console.log($scope.forms.tab1.$valid)
+      if ($scope.forms.tab1.$valid) {
         var Nadm = [];
         angular.forEach($scope.groupe.adminby, function (user) {
           Nadm.push(user._id)
@@ -154,14 +168,19 @@ angular.module('testApp')
     ];
 
     $scope.groupe.type = 0;
-    Auth.getadminsgrp()
+    Auth.listadmin()
       .then(function (u) {
-        $scope.users = u;
-        /* $scope.person.selected = u.filter(function (obj) {
-           return obj._id == Sgroupe.owner._id;
-         })[0];*/
-
+        $scope.listadmin = u;
+        //         $scope.person.selected = u.filter(function (obj) {
+        //           return obj._id == Sgroupe.owner._id;
+        //         })[0];
       });
+
+    Auth.listadmgrp()
+      .then(function (liste) {
+        $scope.listadmgrp = liste;
+      });
+
     $scope.ok = function (form) {
       $scope.submitted = true
       if (form.$valid) {

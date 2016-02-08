@@ -26,13 +26,32 @@ var validationError = function (res, err) {
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-  //console.log(req.query);
+  console.log(req.query);
   //User.find({}, '-salt -hashedPassword', function (err, users) {
   User.find(req.query, '-salt -hashedPassword', function (err, users) {
     if (err) return res.send(500, err);
     res.json(200, users);
   });
 };
+
+/**
+ * Get list of admin and admin_grp
+ *
+ */
+exports.listadmgrp = function (req, res) {
+  User.find({
+      role: {
+        $in: ['admin', 'admin_grp']
+      }
+    },
+    '-salt -hashedPassword',
+    function (err, users) {
+      //User.find({isactif: false }, '-salt -hashedPassword', function (err, users) {
+      if (err) return res.send(500, err);
+      res.json(200, users);
+    }
+  );
+}
 
 /*
  * get list of Demands

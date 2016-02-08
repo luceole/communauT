@@ -1,8 +1,9 @@
-#Communaut-
+#CommunauT
 
-Projet test
+Organize your groups.
+ Calendar schedule
+ Pools
+ Notes &  Pads
 
-Apprentissage MEANS ;-)
-et GIT ...
 
 

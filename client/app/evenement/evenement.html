@@ -1,4 +1,5 @@
 <div ng-include="'components/navbar/navbar.html'"></div>
+<div ng-include="'components/navbar/navbar.html'"></div>
 <div class="container">
   <div class="col-md-12">
 
@@ -49,9 +50,8 @@
                 <p class="help-block" ng-show="editerForm.title.$error.required && submitted">
                   Titre Obligatoire
                 </p>
-
                 Description
-                <input type="text" name="inof" class="form-control" ng-model="calEvent.info" required style="width:450px" />
+                <input type="text" name="info" class="form-control" ng-model="calEvent.info" required style="width:450px" />
                 <p class="help-block" ng-show="editerForm.title.$error.required && submitted">
                   Info Obligatoire
                 </p>
@@ -64,42 +64,43 @@
             </div>
 
             <div class="row">
-
               <div class="col-md-6">
                 <input type="checkbox" ng-model="calEvent.allDay"> Journée complète.
-                <div ng-if="!calEvent.allDay">
-                  Date Début
-                  <p class="input-group">
-                    <input type="text" class="form-control" style="width:350px" datepicker-popup="{{format}}" ng-model="calEvent.start" is-open="openedDD" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="false" close-text="Close" />
-                    <button type="button" class="btn btn-default" ng-click="openDD($event)"><i class="glyphicon glyphicon-calendar"></i>
-                    </button>
+                <!--<div ng-show="calEvent.allDay">
+                  <input type="date" ng-model="calEvent.start" name="indate" placeholder="yyyy-MM-dd" />
+                </div>-->
+
+                <br>Date Début
+                <p class="input-group">
+
+                  <input type="texte" class="form-control" style="width:150px" datepicker-popup="{{format}}" ng-model="calEvent.start" is-open="openedDD" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="false" close-text="Close" />
+                  <button type="button" class="btn btn-default" ng-click="openDD($event)"> <i class="glyphicon glyphicon-calendar"></i>
+                  </button>
+                  <p class="help-block" ng-show="editerForm.lieu.$error.required && submitted">
+                    Date Obligatoire
+                  </p>
+
+                  <div ng-show="!calEvent.allDay">
                     <div> Heure de début :
                       <timepicker ng-model="calEvent.start" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="false">Début</timepicker>
                     </div>
 
-                    <span class="input-group-btn">
+                    <!-- <span class="input-group-btn"></span>-->
+
+                    Date Fin
+                    <p class="input-group">
+                      <input type="text" class="form-control" style="width:350px" datepicker-popup="{{format}}" ng-model="calEvent.end" is-open="openedDF" min-date=calEvent.start datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="false" close-text="Close" />
+                      <button type="button" class="btn btn-default" ng-click="openDF($event)"><i class="glyphicon glyphicon-calendar"></i>
+                      </button>
+                      <div> Heure de Fin :
+                        <timepicker ng-model="calEvent.end" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="false"></timepicker>
+                      </div>
+
+
+                      <span class="input-group-btn">
         </span>
-
-
-                    <p class="help-block" ng-show="editerForm.lieu.$error.required && submitted">
-                      Date Obligatoire
-                    </p>
+                  </div>
                   </p>
-
-                  Date Fin
-                  <p class="input-group">
-                    <input type="text" class="form-control" style="width:350px" datepicker-popup="{{format}}" ng-model="calEvent.end" is-open="openedDF" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="false" close-text="Close" />
-                    <button type="button" class="btn btn-default" ng-click="openDF($event)"><i class="glyphicon glyphicon-calendar"></i>
-                    </button>
-                    <div> Heure de Fin :
-                      <timepicker ng-model="calEvent.end" ng-change="changed()" hour-step="hstep" minute-step="mstep" show-meridian="false"></timepicker>
-                    </div>
-
-
-                    <span class="input-group-btn">
-        </span>
-                </div>
-                </p>
               </div>
             </div>
 
