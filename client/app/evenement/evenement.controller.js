@@ -191,6 +191,7 @@ angular.module('testApp')
 
 angular.module('testApp')
   .controller('ModalEditEvCtrl', function ($scope, $modalInstance, $window, $filter, Auth, Groupe, Events, updateEvent, Sdate, userGroupes, eventSources, refreshEvents) {
+    $scope.forms = {};
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd.MM.yyyy', 'short'];
     $scope.format = $scope.formats[2];
     $scope.dateOptions = {
@@ -266,11 +267,11 @@ angular.module('testApp')
     };
 
     $scope.ok = function (form) {
+
       $scope.submitted = true;
-      console.log(form.$valid);
-      form.$valid = true;
-      console.log($scope.calEvent.start);
-      if (form.$valid) {
+      console.log($scope.forms.tab1.$valid)
+      if ($scope.forms.tab1.$valid) {
+
         if ($scope.newEv) {
           console.log("Ajout  ");
           console.debug($scope.grp.selected);
