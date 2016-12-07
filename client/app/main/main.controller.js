@@ -10,7 +10,7 @@ angular.module('testApp')
       success(function (data) {
         if (data) {
           $cookies.put('sessionID', data.sessionID);
-          $window.open('//lab12-eole.ac-dijon.fr:9001/p/' + grp.groupPadID + "$" + grp.name + "?userName=" + $scope.getCurrentUser().name);
+          $window.open('//localhost:9001/p/' + grp.groupPadID + "$" + grp.name + "?userName=" + $scope.getCurrentUser().name);
         } else alert("Pad  non trouvé ou vous n'êtes pas autorisé");
       }).
       error(function (err) {
