@@ -26,7 +26,7 @@ var validationError = function (res, err) {
  * restriction: 'admin'
  */
 exports.index = function (req, res) {
-  console.log(req.query);
+  //console.log(req.query);
   //User.find({}, '-salt -hashedPassword', function (err, users) {
   User.find(req.query, '-salt -hashedPassword', function (err, users) {
     if (err) return res.send(500, err);
@@ -56,7 +56,11 @@ exports.listadmgrp = function (req, res) {
 /*
  * get list of Demands
  */
-exports.demandes = function (req, res) {
+
+
+
+
+exports.userinact = function (req, res) {
   User.find({
     isdemande: true
   }, '-salt -hashedPassword', function (err, users) {
@@ -64,6 +68,23 @@ exports.demandes = function (req, res) {
     if (err) return res.send(500, err);
     res.json(200, users);
   });
+};
+
+exports.demandes = function (req, res) {
+var query = {isdemande: true };
+var page =  req.query.page;
+
+ var options={
+  select: 'uid name surname creationDate email structure isactif',
+  page: page, 
+  limit: 12
+};
+console.log(options);
+User.paginate(query, options, function(err,result) {
+    //console.log(result);
+    if (err) return res.send(500, err);
+    res.json(200, {docs:result.docs,total:result.total});
+});
 };
 
 /*

@@ -1,6 +1,8 @@
 'us/ strict';
 
 var mongoose = require('mongoose');
+var mongoosePaginate = require('mongoose-paginate');
+//var mongoosePaginator = require('mongoose-paginator-simple');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
 
@@ -198,4 +200,5 @@ UserSchema.methods = {
   }
 };
 
+UserSchema.plugin(mongoosePaginate);
 module.exports = mongoose.model('User', UserSchema);

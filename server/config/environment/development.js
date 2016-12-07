@@ -8,10 +8,11 @@ module.exports = {
     uri: 'mongodb://localhost/annuaire-dev'
   },
   seedDB: true,
-
-  etherpad: {
-    apikey: '2ee76d94192fce9c225318573c40a3f5c35541efdfc3ea39af003df2abc45f88',
-    host: 'localhost',
+ etherpad: {
+    apikey: 'ab5bf2ed0cf6df5457a43e2000f33c15f367e8e309d12d905b4a3a04aa3b23eb',
+    host: 'lab12-eole.ac-dijon.fr',
     port: '9001'
   }
+
+
 };

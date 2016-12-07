@@ -2,19 +2,23 @@
 <div class="container">
   <p class="text-info">Selectionez les inscriptions à valider</p>
   <form>
-    <button ng_if="demandes.length>0" ng-click="checkAll()">Toutes</button>
-    <button ng_if="demandes.length>0" ng-click="uncheckAll()">Aucune</button>
-    <button ng_if="demandes.length>0" clas='btn btn-default' ng-click="traite(demandes);">
+    <button ng_if="demandes.docs.length>0" ng-click="checkAll()">Toutes</button>
+    <button ng_if="demandes.docs.length>0" ng-click="uncheckAll()">Aucune</button>
+    <button ng_if="demandes.docs.length>0" clas='btn btn-default' ng-click="traite(demandes);">
       <span> Appliquer </span>
     </button>
   </form>
+      <p class="text-warning" ng-if="demandes.docs.length==0">  Chargement ...</p>
   <br>
-  <p class="text-warning" ng-if="demandes.length==0">Aucune inscriptions à valider</p>
+  <dir-pagination-controls boundary-links="true" on-page-change="pageChanged(newPageNumber)" template-url="app/utilisateurs/dirPagination.tpl.html"></dir-pagination-controls>
+
   <table class="table table-condensed table-striped">
     <tbody>
-      <tr ng-repeat="user in demandes | orderBy:'name'">
+ <tr dir-paginate="user in demandes.docs | itemsPerPage: usersPerPage" total-items="totalUsers" current-page="pagination.current">
+
+     NB Demande : {{demandes.total}}
         <td>
-          <input type="checkbox" ng-model="demandes[$index].isactif">
+          <input type="checkbox" ng-model="user.isactif">
         </td>
         <td>
           {{user.creationDate | date: "dd/MM/yyyy"}}
@@ -31,9 +35,9 @@
     </tbody>
   </table>
   <br>
-  <button ng_if="demandes.length>20" ng-click="checkAll()">Toutes</button>
-  <button ng_if="demandes.length>20" ng-click="uncheckAll()">Aucune</button>
-  <button ng_if="demandes.length>20" clas='btn btn-default' ng-click="traite(demandes);">
+  <button ng_if="demandes.docs.length>20" ng-click="checkAll()">Toutes</button>
+  <button ng_if="demandes.docs.length>20" ng-click="uncheckAll()">Aucune</button>
+  <button ng_if="demandes.docs.length>20" clas='btn btn-default' ng-click="traite(demandes);">
     <span> Appliquer </span>
   </button>
 

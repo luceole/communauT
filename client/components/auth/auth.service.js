@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('testApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, User, Groupe, Pool) {
+  .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, User, Groupe, Pool,Demande) {
     var currentUser = {};
     if ($cookieStore.get('token')) {
       currentUser = User.get();
@@ -43,6 +43,16 @@ angular.module('testApp')
       logout: function () {
         $cookieStore.remove('token');
         currentUser = {};
+      },
+     DemandesPage: function (page, callback) {
+        var cb = callback || angular.noop;
+        return Demande.get({page: page},
+          function (err) {
+            return cb(err);
+          },
+          function (err) {
+            return cb(err);
+          }.bind(this)).$promise;
       },
 
       byMail: function (mel, callback) {

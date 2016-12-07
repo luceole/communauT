@@ -123,8 +123,7 @@ angular.module('testApp')
 
     /* Render Tooltip */
     $scope.eventRender = function (event, element, view) {
-      /*  console.log(event.start.format())
-        console.log(event.end.format())*/
+      if (event.end == null )  event.end=event.start;
       var icalEvent = {
         // start: new Date(event.start + (60 * 60 * 1000)), // Marche pas jour complet !!!
         start: new Date(event.start.format()),
@@ -222,6 +221,8 @@ angular.module('testApp')
       $scope.calEvent.lieu = updateEvent.lieu;
       if (updateEvent.end) {
         $scope.calEvent.end = new Date(updateEvent.end);
+      } else {
+        $scope.calEvent.end = new Date(updateEvent.start);
       }
       $scope.userGroupes = userGroupes;
       $scope.selectedGroupeInfo = updateEvent.source.group.info;
@@ -230,6 +231,7 @@ angular.module('testApp')
       $scope.newEv = true;
       $scope.titre = "Ajout d'un événement";
       $scope.calEvent.start = new Date(Sdate);
+      $scope.calEvent.end = new Date(Sdate);
       $scope.Groupes = userGroupes;
       $scope.grp.selected = userGroupes[0];
       $scope.calEvent.info = "REUNION";
@@ -252,6 +254,11 @@ angular.module('testApp')
       $scope.openedDF = true;
     };
     $scope.delete = function () {
+      if ($scope.calEvent.participants.length > 0) {
+        if (!$window.confirm("Attention des participants sont inscrits \nConfirmez vous la suppression?")) {
+          return;
+        }
+      }
       Auth.eventdelete(updateEvent.source.groupe_id, {
           id: $scope.backupEvent
         })

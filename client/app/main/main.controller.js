@@ -10,7 +10,7 @@ angular.module('testApp')
       success(function (data) {
         if (data) {
           $cookies.put('sessionID', data.sessionID);
-          $window.open('//localhost:9001/p/' + grp.groupPadID + "$" + grp.name + "?userName=" + $scope.getCurrentUser().name);
+          $window.open('//lab12-eole.ac-dijon.fr:9001/p/' + grp.groupPadID + "$" + grp.name + "?userName=" + $scope.getCurrentUser().name);
         } else alert("Pad  non trouvé ou vous n'êtes pas autorisé");
       }).
       error(function (err) {
@@ -93,9 +93,10 @@ angular.module('testApp')
       if (!event.allDay && event.end) {
         StartStop = event.start.format('DD/MM/YYYY HH:mm') + "  - " + event.end.format('hh:mm')
       }
-      console.log(event.source.group)
+      //console.log(event.source.group)
       $window.localStorage.setItem('eventPadId', event.eventPadID);
 
+      if (event.end == null )  event.end=event.start;
       var icalEvent = {
         start: new Date(event.start.format()),
         end: new Date(event.end.format())

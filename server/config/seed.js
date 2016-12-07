@@ -173,7 +173,7 @@ User.find({}).remove(function () {
   });
 
   var uT = [];
-  for (var i = 0; i < 10; i++) {
+  for (var i = 0; i < 200 ; i++) {
     uT.push({
       provider: 'local',
       name: 'EOLE' + i,
