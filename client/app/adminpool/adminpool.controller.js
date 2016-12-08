@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('AdminPoolCtrl', function ($scope, $http, $modal, $window, socket, Auth, User, Groupe, Pool) {
     $scope.groupes = Groupe.query();
     $scope.pools = Pool.query();
@@ -77,7 +77,7 @@ angular.module('testApp')
   });
 
 // Create & Modify Pool
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalAddAdminPoolCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Pool, selectedPool) {
     $scope.active = {};
     $scope.titre = "Création d'un sondage";
@@ -271,7 +271,7 @@ angular.module('testApp')
     };
   });
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalViewPoolCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Pool, selectedPool) {
     $scope.repuser = [];
     $scope.totx = [];

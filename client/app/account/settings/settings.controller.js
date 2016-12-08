@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('SettingsCtrl', function ($scope, User, Auth) {
     $scope.errors = {};
     $scope.tabs = [

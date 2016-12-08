@@ -3,7 +3,7 @@
 describe('Controller: EvenementCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('testApp'));
+  beforeEach(module('communauT'));
 
   var EvenementCtrl, scope;
 

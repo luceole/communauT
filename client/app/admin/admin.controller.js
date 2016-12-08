@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('AdminCtrl', function($scope, $http, Auth,Demande) {
   $scope.totalUsers = 0;
   $scope.usersPerPage = 12;

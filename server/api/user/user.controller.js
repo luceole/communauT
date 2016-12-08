@@ -370,8 +370,6 @@ var ldapAdd = function (req) {
     userPassword: req.body.password
   };
   console.log(entry);
-  //var clientLdap=ldap.createClient({url:'ldap://platon.ac-dijon.fr'});
-  //clientLdap.bind('cn=admin,o=gouv,c=fr','AdminEole21',function(err) 
   var clientLdap = ldap.createClient({
     url: 'ldap://172.26.60.27'
   });

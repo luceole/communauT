@@ -3,7 +3,7 @@
 describe('Controller: PoolCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('testApp'));
+  beforeEach(module('communauT'));
 
   var PoolCtrl, scope;
 

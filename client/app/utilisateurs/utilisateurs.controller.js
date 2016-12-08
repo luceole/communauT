@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('UtilisateursCtrl', function($scope, $http, $modal, $window, Auth, User) {
 
     console.log("Utilisateurstrl");
@@ -58,7 +58,7 @@ angular.module('testApp')
     };
   });
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalEditCtrl', function($scope, $modalInstance, $window, Auth, User, Suser) {
     $scope.user = new User(Suser);
     //$scope.user=  User.get({id: Suser._id});

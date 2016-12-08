@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('MainCtrl', function ($scope, $http, $location, $compile, $timeout, $cookies, $window, $modal, socket, uiCalendarConfig, Auth, Calendar) {
     $scope.openPad = function (grp) {
       $http.post('/api/pads', {

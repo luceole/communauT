@@ -3,7 +3,7 @@
 /**
  * Removes server error when user updates input
  */
-angular.module('testApp')
+angular.module('communauT')
   .directive('mongooseError', function () {
     return {
       restrict: 'A',

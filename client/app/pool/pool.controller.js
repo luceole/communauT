@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testApp')
+angular.module('communauT')
   .filter('ouinon', function () {
     return function (input) {
       return input ? 'Oui' : 'Non';
@@ -50,7 +50,7 @@ angular.module('testApp')
 
   });
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalRepPoolCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Pool, selectedPool) {
     $scope.repuser = [];
     $scope.totx = [];

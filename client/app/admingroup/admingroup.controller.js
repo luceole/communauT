@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('AdmingroupCtrl', function ($scope, $http, $modal, $window, socket, Auth, User, Groupe) {
     console.log('AdmingroupCtrl');
     $scope.groupes = Groupe.query();
@@ -57,7 +57,7 @@ angular.module('testApp')
 //EDIT GROUP
 
 /***** ILFAUT aussi mettre à jour l'utilisateur=> adminOf *****/
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalEditAdminGroupCtrl', function ($scope, $modalInstance, $window, Auth, User, Groupe, Sgroupe) {
     $scope.groupe = new Groupe(Sgroupe);
     $scope.person = {};
@@ -147,7 +147,7 @@ angular.module('testApp')
 
 
 // Group Create
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalAddAdminGroupCtrl', function ($scope, $modalInstance, $window, Auth, User, Groupe, Sgroupes) {
     $scope.groupe = new Groupe();
     $scope.person = {};

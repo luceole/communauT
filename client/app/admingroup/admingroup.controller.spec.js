@@ -3,7 +3,7 @@
 describe('Controller: AdmingroupCtrl', function() {
 
   // load the controller's module
-  beforeEach(module('testApp'));
+  beforeEach(module('communauT'));
 
   var AdmingroupCtrl, scope;
 

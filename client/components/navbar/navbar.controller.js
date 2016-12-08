@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testApp').controller('NavbarCtrl', function ($scope, $location, Auth) {
+angular.module('communauT').controller('NavbarCtrl', function ($scope, $location, Auth) {
   $scope.isCollapsed = true;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.isAdmin = Auth.isAdmin;

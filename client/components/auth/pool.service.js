@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .factory('Pool', function ($resource) {
     return $resource('/api/pools/:id/:controller', {
       id: '@_id'

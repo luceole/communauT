@@ -3,7 +3,7 @@
 describe('Controller: NoteCtrl', function () {
 
   // load the controller's module
-  beforeEach(module('testApp'));
+  beforeEach(module('communauT'));
 
   var NoteCtrl, scope;
 

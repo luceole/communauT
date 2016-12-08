@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp', [
+angular.module('communauT', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -8,8 +8,6 @@ angular.module('testApp', [
     'ui.router',
     'ui.select',
     'ui.calendar',
-    //  'ngTable',
-
     'angularUtils.directives.dirPagination',
     'ui.bootstrap',
   'ckeditor',

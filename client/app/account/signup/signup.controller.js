@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('SignupCtrl', function ($scope, Auth, $location) {
     $scope.user = {};
     $scope.errors = {};

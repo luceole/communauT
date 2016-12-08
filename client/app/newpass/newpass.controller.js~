@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
  .controller('NewpassCtrl', function ($scope,User,Auth) {
     $scope.message = '';
     $scope.error = '';

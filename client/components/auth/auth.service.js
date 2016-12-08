@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, User, Groupe, Pool,Demande) {
     var currentUser = {};
     if ($cookieStore.get('token')) {

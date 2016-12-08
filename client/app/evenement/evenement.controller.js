@@ -1,6 +1,6 @@
 'use strict';
 'use strict';
-angular.module('testApp')
+angular.module('communauT')
   .controller('EvenementCtrl', function ($scope, $http, $modal, $filter, $compile, Auth, Groupe, Events, Calendar) {
     $scope.eventSources = [];
     $scope.selectedGroupeInfo = "";
@@ -188,7 +188,7 @@ angular.module('testApp')
 
   });
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('ModalEditEvCtrl', function ($scope, $modalInstance, $window, $filter, Auth, Groupe, Events, updateEvent, Sdate, userGroupes, eventSources, refreshEvents) {
     $scope.forms = {};
     $scope.formats = ['dd-MMMM-yyyy', 'yyyy-MM-dd', 'dd.MM.yyyy', 'short'];

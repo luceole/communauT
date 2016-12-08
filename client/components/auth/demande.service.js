@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .factory('Demande', function($resource) {
     return $resource('/api/users/demandes/');
  });

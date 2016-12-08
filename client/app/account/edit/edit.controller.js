@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testApp')
+angular.module('communauT')
   .controller('EditCtrl', function ($scope,Auth) {
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.user = $scope.getCurrentUser();

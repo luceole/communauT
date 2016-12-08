@@ -1,5 +1,5 @@
 'use strict';
-angular.module('testApp')
+angular.module('communauT')
   .factory('Groupe', function ($resource) {
     return $resource('/api/groupes/:id/:controller', {
       id: '@_id'

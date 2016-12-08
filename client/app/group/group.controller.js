@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('GroupCtrl', function ($scope, $http, $modal, socket, Auth, User, Groupe, GroupeOf, GroupeOpen) {
     $scope.user = Auth.getCurrentUser();
     $scope.groups = GroupeOpen.query();
@@ -12,11 +12,8 @@ angular.module('testApp')
       socket.unsyncUpdates('groupe');
     });
     $scope.isMemberOf = function (groupe, usr) {
-      //var usr=$scope.user;
       var grpId = groupe._id
-        //alert("isMember ");
       var r = usr.memberOf.filter(function (obj) {
-        //alert(obj.info+ " "+obj._id+" test "+ grpId);  // verifier pourquoi la fonction est appellé plein de fois
         return obj._id == grpId;
       });
       return r[0] ? 1 : null

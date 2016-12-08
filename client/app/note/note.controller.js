@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('testApp')
+angular.module('communauT')
   .controller('NoteCtrl', function ($http, $scope, $cookies, $window, $location, Auth) {
     $scope.message = 'Hello';
     $scope.OpenPad = function (padId) {
