@@ -8,21 +8,21 @@
   </dir-pagination-controls>
   <br>
   <table class="table table-striped ">
-    <tr dir-paginate="pool in pools | orderBy:'groupeInfo' | filter:search:strict | itemsPerPage :'12' ">
+    <tr dir-paginate="poll in polls | orderBy:'groupeInfo' | filter:search:strict | itemsPerPage :'12' ">
       <td>
-        <button class="btn btn-warning btn-xs" type="button" ng-click="rep(pool)" rel="tooltip" title="Répondre au sondage">
+        <button class="btn btn-warning btn-xs" type="button" ng-click="rep(poll)" rel="tooltip" title="Répondre au sondage">
           <span class="glyphicon glyphicon-star"></span>Répondre
         </button>
-        {{pool.groupeInfo}}
+        {{poll.groupeInfo}}
       </td>
       <td>
-        <strong>{{pool.name}}</strong>
+        <strong>{{poll.name}}</strong>
       </td>
       <td>
-        {{pool.info}}
+        {{poll.info}}
       </td>
       <td>
-        {{pool.resultats.length}}
+        {{poll.resultats.length}}
       </td>
     </tr>
   </table>
@@ -30,7 +30,7 @@
 
 
 
-<script type="text/ng-template" id="modalRepPool.html">
+<script type="text/ng-template" id="modalRepPoll.html">
   <div class="modal-header">
     <h3 class="modal-title">Répondre au sondage <button class="glyphicon glyphicon-remove pull-right" ng-click="cancel()">
         </button></h3>

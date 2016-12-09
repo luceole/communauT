@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 //var Groupe = require('../groupe/groupe.model');
 
-var PoolSchema = new Schema({
+var PollSchema = new Schema({
   name: String,
   info: String,
   isActif: Boolean,
@@ -47,4 +47,4 @@ var PoolSchema = new Schema({
 }]*/
 });
 
-module.exports = mongoose.model('Pool', PoolSchema);
+module.exports = mongoose.model('Poll', PollSchema);

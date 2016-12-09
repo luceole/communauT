@@ -13,7 +13,7 @@ module.exports = function (app) {
   app.use('/api/pads', require('./api/pad'));
   app.use('/api/events', require('./api/event'));
   app.use('/api/groupes', require('./api/groupe'));
-  app.use('/api/pools', require('./api/pool'));
+  app.use('/api/polls', require('./api/poll'));
   app.use('/api/things', require('./api/thing'));
   app.use('/api/users', require('./api/user'));
   app.use('/auth', require('./auth'));

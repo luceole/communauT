@@ -3,10 +3,10 @@
 angular.module('communauT')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('adminpool', {
-        url: '/adminpool',
-        templateUrl: 'app/adminpool/adminpool.html',
-        controller: 'AdminPoolCtrl',
+      .state('adminpoll', {
+        url: '/adminpoll',
+        templateUrl: 'app/adminpoll/adminpoll.html',
+        controller: 'AdminPollCtrl',
         authenticate: true,
         adminreserved: false
       });

@@ -1,16 +1,16 @@
 'use strict';
 
-describe('Controller: PoolCtrl', function () {
+describe('Controller: PollCtrl', function () {
 
   // load the controller's module
   beforeEach(module('communauT'));
 
-  var PoolCtrl, scope;
+  var PollCtrl, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    PoolCtrl = $controller('PoolCtrl', {
+    PollCtrl = $controller('PollCtrl', {
       $scope: scope
     });
   }));

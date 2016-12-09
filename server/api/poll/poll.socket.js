@@ -4,21 +4,21 @@
 
 'use strict';
 
-var Pool = require('./pool.model');
+var Poll = require('./poll.model');
 
 exports.register = function(socket) {
-  Pool.schema.post('save', function (doc) {
+  Poll.schema.post('save', function (doc) {
     onSave(socket, doc);
   });
-  Pool.schema.post('remove', function (doc) {
+  Poll.schema.post('remove', function (doc) {
     onRemove(socket, doc);
   });
 }
 
 function onSave(socket, doc, cb) {
-  socket.emit('pool:save', doc);
+  socket.emit('poll:save', doc);
 }
 
 function onRemove(socket, doc, cb) {
-  socket.emit('pool:remove', doc);
+  socket.emit('poll:remove', doc);
 }

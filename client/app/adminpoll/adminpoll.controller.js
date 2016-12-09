@@ -1,27 +1,27 @@
 'use strict';
 
 angular.module('communauT')
-  .controller('AdminPoolCtrl', function ($scope, $http, $modal, $window, socket, Auth, User, Groupe, Pool) {
+  .controller('AdminPollCtrl', function ($scope, $http, $modal, $window, socket, Auth, User, Groupe, Poll) {
     $scope.groupes = Groupe.query();
-    $scope.pools = Pool.query();
+    $scope.polls = Poll.query();
 
-    socket.syncUpdates('pool', $scope.pools, function (event, item, object) {});
+    socket.syncUpdates('poll', $scope.polls, function (event, item, object) {});
     $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('pool');
+      socket.unsyncUpdates('poll');
     });
 
-    $scope.delete = function (pool) {
-      if ($window.confirm("Suppression de " + pool.name)) {
-        Pool.remove({
-          id: pool._id
+    $scope.delete = function (poll) {
+      if ($window.confirm("Suppression de " + poll.name)) {
+        Poll.remove({
+          id: poll._id
         });
       };
     };
     $scope.refresh = function () {};
-    $scope.active = function (pool) {
-      pool.isActif = !pool.isActif;
-      Auth.updatePool(pool._id, {
-          isActif: pool.isActif
+    $scope.active = function (poll) {
+      poll.isActif = !poll.isActif;
+      Auth.updatePoll(poll._id, {
+          isActif: poll.isActif
         }).then(function (r) {
           console.log("Maj is OK ");
         })
@@ -32,42 +32,42 @@ angular.module('communauT')
         });
     }
 
-    $scope.add = function (pool) {
+    $scope.add = function (poll) {
       $modal.open({
-        controller: 'ModalAddAdminPoolCtrl',
-        templateUrl: 'modalAddAdminPool.html',
+        controller: 'ModalAddAdminPollCtrl',
+        templateUrl: 'modalAddAdminPoll.html',
         size: 'lg',
         resolve: {
-          selectedPool: function () {
-            return pool;
+          selectedPoll: function () {
+            return poll;
             //return null;
           }
         }
       });
     };
 
-    /* $scope.edit = function (pool) {
+    /* $scope.edit = function (poll) {
        $modal.open({
-         controller: 'ModalAddAdminPoolCtrl',
-         templateUrl: 'modaAddAdminPool.html',
+         controller: 'ModalAddAdminPollCtrl',
+         templateUrl: 'modaAddAdminPoll.html',
          size: 'lg',
          resolve: {
-           selectedPool: function () {
-             return pool;
+           selectedPoll: function () {
+             return poll;
            }
          }
        });
      };*/
 
 
-    $scope.view = function (pool) {
+    $scope.view = function (poll) {
       var modalInstance = $modal.open({
-        controller: 'ModalViewPoolCtrl',
-        templateUrl: 'modalViewPool.html',
+        controller: 'ModalViewPollCtrl',
+        templateUrl: 'modalViewPoll.html',
         size: 'lg',
         resolve: {
-          selectedPool: function () {
-            return pool;
+          selectedPoll: function () {
+            return poll;
           }
         }
       });
@@ -76,23 +76,23 @@ angular.module('communauT')
 
   });
 
-// Create & Modify Pool
+// Create & Modify Poll
 angular.module('communauT')
-  .controller('ModalAddAdminPoolCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Pool, selectedPool) {
+  .controller('ModalAddAdminPollCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Poll, selectedPoll) {
     $scope.active = {};
     $scope.titre = "Création d'un sondage";
-    var newPool = false;
+    var newPoll = false;
     if (Auth.isAdmin()) {
       $scope.isadminGroupes = Auth.getCurrentUser().adminOf;
       console.log("i am admin");
     } else {
       $scope.isadminGroupes = Auth.getCurrentUser().adminOf;
     }
-    $scope.pool = new Pool(selectedPool);
+    $scope.poll = new Poll(selectedPoll);
 
-    if (!angular.isObject(selectedPool)) { //CREATE
+    if (!angular.isObject(selectedPoll)) { //CREATE
       console.log("CREATE")
-      newPool = true;
+      newPoll = true;
       $scope.disable = {
         tab0: false,
         tab1: true,
@@ -104,7 +104,7 @@ angular.module('communauT')
 
     {
       console.log("MODIFY");
-      newPool = false;
+      newPoll = false;
       $scope.titre = "Modification du sondage"
       $scope.disable = {
         tab0: false,
@@ -112,9 +112,9 @@ angular.module('communauT')
         tab2: false
       }
       $scope.grp = {};
-      $scope.propositions = angular.copy($scope.pool.propositions)
+      $scope.propositions = angular.copy($scope.poll.propositions)
       $scope.grp.selected = $filter('filter')($scope.isadminGroupes, {
-        _id: $scope.pool.groupe
+        _id: $scope.poll.groupe
       }, true)[0];
       console.log($scope.grp.selected)
     }
@@ -208,14 +208,14 @@ angular.module('communauT')
     }
     $scope.ok = function () {
       console.log("OK")
-      console.log($scope.pool)
+      console.log($scope.poll)
       console.log($scope.grp.selected)
         /* $scope.submitted = true
          if (form.$valid) {*/
-      if (newPool) {
-        Auth.createPool({
-            name: $scope.pool.name,
-            info: $scope.pool.info,
+      if (newPoll) {
+        Auth.createPoll({
+            name: $scope.poll.name,
+            info: $scope.poll.info,
             groupe: $scope.grp.selected._id,
             groupeInfo: $scope.grp.selected.info,
             groupeName: $scope.grp.selected.name,
@@ -239,9 +239,9 @@ angular.module('communauT')
           });
         //}
       } else {
-        Auth.updatePool($scope.pool._id, {
-            name: $scope.pool.name,
-            info: $scope.pool.info,
+        Auth.updatePoll($scope.poll._id, {
+            name: $scope.poll.name,
+            info: $scope.poll.info,
             groupe: $scope.grp.selected._id,
             groupeInfo: $scope.grp.selected.info,
             groupeName: $scope.grp.selected.name,
@@ -272,7 +272,7 @@ angular.module('communauT')
   });
 
 angular.module('communauT')
-  .controller('ModalViewPoolCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Pool, selectedPool) {
+  .controller('ModalViewPollCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Poll, selectedPoll) {
     $scope.repuser = [];
     $scope.totx = [];
     $scope.doTxt = function (r, i) {
@@ -290,11 +290,11 @@ angular.module('communauT')
       return subs;
     };
     $scope.user = Auth.getCurrentUser();
-    $scope.pool = new Pool(selectedPool);
+    $scope.poll = new Poll(selectedPoll);
     $scope.found = [];
-    $scope.propositions = $scope.pool.propositions;
+    $scope.propositions = $scope.poll.propositions;
     $scope.subDate = $scope.subHeaders();
-    $scope.resultats = $scope.pool.resultats;
+    $scope.resultats = $scope.poll.resultats;
 
 
     $scope.rep = function (r) {
@@ -303,7 +303,7 @@ angular.module('communauT')
     }
 
     $scope.cancel = function () {
-      $scope.resultats = $scope.pool.resultats;
+      $scope.resultats = $scope.poll.resultats;
       $modalInstance.dismiss('cancel');
     };
   });

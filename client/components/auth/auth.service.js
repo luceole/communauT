@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('communauT')
-  .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, User, Groupe, Pool,Demande) {
+  .factory('Auth', function Auth($location, $rootScope, $http, $cookieStore, $q, User, Groupe, Poll,Demande) {
     var currentUser = {};
     if ($cookieStore.get('token')) {
       currentUser = User.get();
@@ -301,49 +301,49 @@ angular.module('communauT')
       },
 
 
-      // Create Pool
-      createPool: function (pool, callback) {
+      // Create Poll
+      createPoll: function (poll, callback) {
         var cb = callback || angular.noop;
 
-        return Pool.save(pool,
+        return Poll.save(poll,
           function (data) {
-            return cb(pool);
+            return cb(poll);
           },
           function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
 
-      updatePool: function (id, pool, callback) {
+      updatePoll: function (id, poll, callback) {
         var cb = callback || angular.noop;
 
-        return Pool.update({
+        return Poll.update({
             id: id
-          }, pool,
+          }, poll,
           function (data) {
-            return cb(pool);
+            return cb(poll);
           },
           function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
-      votePool: function (id, pool, callback) {
+      votePoll: function (id, poll, callback) {
         var cb = callback || angular.noop;
-        console.log(pool)
-        return Pool.vote({
+        console.log(poll)
+        return Poll.vote({
             id: id
-          }, pool,
+          }, poll,
           function (data) {
-            return cb(pool);
+            return cb(poll);
           },
           function (err) {
             return cb(err);
           }.bind(this)).$promise;
       },
-      mypools: function (mygrp, callback) {
+      mypolls: function (mygrp, callback) {
         var cb = callback || angular.noop;
         console.log(mygrp);
-        return Mypools(mygrp,
+        return Mypolls(mygrp,
           function (data) {
             return cb(mygrp);
           },

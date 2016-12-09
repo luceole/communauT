@@ -5,7 +5,7 @@ angular.module('communauT')
       return input ? 'Oui' : 'Non';
     }
   })
-  .controller('PoolCtrl', function ($scope, $http, $modal, socket, Auth, User, Pool, Groupe, GroupeOf, Mypools) {
+  .controller('PollCtrl', function ($scope, $http, $modal, socket, Auth, User, Poll, Groupe, GroupeOf, Mypolls) {
 
     $scope.user = Auth.getCurrentUser();
     var userGroupes = [];
@@ -13,35 +13,35 @@ angular.module('communauT')
       userGroupes.push(p.name);
     });
     userGroupes.push('') // pour toujours avoir un tableau à transmettre !
-    $scope.pools = Mypools.query({
+    $scope.polls = Mypolls.query({
       mygrp: userGroupes
     });
 
-    socket.syncUpdates('pool', $scope.pools, function (event, item, object) {
-      $scope.pools = Mypools.query({
+    socket.syncUpdates('poll', $scope.polls, function (event, item, object) {
+      $scope.polls = Mypolls.query({
         mygrp: userGroupes
       });
 
     });
     $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('pool');
+      socket.unsyncUpdates('poll');
     });
 
 
 
-    $scope.rep = function (pool) {
+    $scope.rep = function (poll) {
       var modalInstance = $modal.open({
-        controller: 'ModalRepPoolCtrl',
-        templateUrl: 'modalRepPool.html',
+        controller: 'ModalRepPollCtrl',
+        templateUrl: 'modalRepPoll.html',
         size: 'lg',
         resolve: {
-          selectedPool: function () {
-            return pool;
+          selectedPoll: function () {
+            return poll;
           }
         }
       });
       modalInstance.result.then(function (selectedItem) {}, function () {
-        $scope.pools = Mypools.query({
+        $scope.polls = Mypolls.query({
           mygrp: userGroupes
         });
       });
@@ -51,7 +51,7 @@ angular.module('communauT')
   });
 
 angular.module('communauT')
-  .controller('ModalRepPoolCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Pool, selectedPool) {
+  .controller('ModalRepPollCtrl', function ($scope, $modal, $modalInstance, $window, $timeout, $filter, Auth, User, Groupe, Poll, selectedPoll) {
     $scope.repuser = [];
     $scope.totx = [];
     $scope.doTxt = function (r, i) {
@@ -69,13 +69,13 @@ angular.module('communauT')
       return subs;
     };
     $scope.user = Auth.getCurrentUser();
-    $scope.pool = new Pool(selectedPool);
+    $scope.poll = new Poll(selectedPoll);
     $scope.found = [];
-    $scope.propositions = $scope.pool.propositions;
+    $scope.propositions = $scope.poll.propositions;
     $scope.subDate = $scope.subHeaders();
 
     $scope.email = $scope.user.email;
-    $scope.resultats = $scope.pool.resultats;
+    $scope.resultats = $scope.poll.resultats;
     $scope.found = $filter('filter')($scope.resultats, {
       user: {
         email: $scope.email
@@ -110,9 +110,9 @@ angular.module('communauT')
         reponses: $scope.repuser
       };
 
-      console.log($scope.pool)
-      Auth.votePool($scope.pool._id, {
-          resultats: $scope.pool.resultats,
+      console.log($scope.poll)
+      Auth.votePoll($scope.poll._id, {
+          resultats: $scope.poll.resultats,
           vote: newRep
         })
         .then(function (r) {
@@ -127,7 +127,7 @@ angular.module('communauT')
     }
 
     $scope.cancel = function () {
-      $scope.resultats = $scope.pool.resultats;
+      $scope.resultats = $scope.poll.resultats;
       $modalInstance.dismiss('cancel');
     };
   });

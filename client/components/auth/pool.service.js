@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('communauT')
-  .factory('Pool', function ($resource) {
-    return $resource('/api/pools/:id/:controller', {
+  .factory('Poll', function ($resource) {
+    return $resource('/api/polls/:id/:controller', {
       id: '@_id'
     }, {
       update: {
@@ -19,6 +19,6 @@ angular.module('communauT')
       }
     });
   })
-  .factory('Mypools', function ($resource) {
-    return $resource('/api/pools/mypools')
+  .factory('Mypolls', function ($resource) {
+    return $resource('/api/polls/mypolls')
   });
